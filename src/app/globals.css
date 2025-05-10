@@ -5,18 +5,18 @@
 @layer base {
   :root {
     --background: 0 0% 94.1%; /* Light Gray #F0F0F0 */
-    --foreground: 240 10% 3.9%; /* Dark Gray for text */
+    --foreground: 0 0% 0%; /* Black */
     --card: 0 0% 100%; /* White */
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 0%; /* Black */
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 180 100% 25.1%; /* Teal #008080 - This will be our 'green' for the gradient */
+    --popover-foreground: 0 0% 0%; /* Black */
+    --primary: 180 100% 25.1%; /* Teal #008080 */
     --primary-foreground: 0 0% 98%; /* Almost White */
     --secondary: 210 40% 96.1%; /* Lighter gray */
-    --secondary-foreground: 240 5.9% 10%; /* Dark text for secondary */
+    --secondary-foreground: 0 0% 5%; /* Very dark neutral gray (near black) */
     --muted: 210 40% 96.1%;
-    --muted-foreground: 210 40% 45.1%; /* Lighter dark gray */
-    --accent: 211 100% 50%; /* Blue #007BFF - This will be our 'blue' for the gradient */
+    --muted-foreground: 0 0% 20%; /* Dark neutral gray */
+    --accent: 211 100% 50%; /* Blue #007BFF */
     --accent-foreground: 0 0% 98%; /* Almost White */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -30,11 +30,11 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-foreground: 0 0% 10%; /* Dark neutral gray */
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-accent-foreground: 0 0% 5%; /* Very dark neutral gray */
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
