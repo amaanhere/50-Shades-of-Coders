@@ -25,11 +25,10 @@ Intelligent interaction from speech input in rural health setups.
 🛠️ Tech Stack 
 Frontend: React / Flutter (if applicable)
 
-Backend: Node.js / Python
+Backend: Node.js 
 
-AI Model: OpenAI API or custom LLM
+Graphics: CSS
 
-Speech-to-Text: Whisper / Google STT
-
-Languages Supported: English, Hindi, Tamil, Telugu, Bengali, Marathi, etc.
+AI Model: Gemini 
+Languages Supported: English, Hindi, French, Arabic, Spanish, etc.
 
