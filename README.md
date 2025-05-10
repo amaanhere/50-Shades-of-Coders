@@ -1,3 +1,9 @@
+GOOD HEALTH AND WELL-BEING
+ PROBLEM STATEMENT:- DEVELOP A TELECOMMUNICATION APP WITH LOCAL LANGUAGE SUPPORT 
+
+
+
+
 🏥 AI-Powered Telemedicine Assistant
 An AI-enhanced virtual healthcare assistant that helps users check symptoms, translate medical information, communicate with a chatbot, summarize doctor-patient conversations, and understand voice inputs — all in multiple languages.
 
