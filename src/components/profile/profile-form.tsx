@@ -35,8 +35,8 @@ export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      fullName: '', // Populate from localStorage/API in useEffect
-      email: '',    // Populate from localStorage/API in useEffect
+      fullName: '', 
+      email: '',   
       phone: '',
       bio: '',
       specialty: '',
@@ -50,15 +50,19 @@ export function ProfileForm() {
     if (storedRole === 'doctor') {
       setIsDoctor(true);
     }
-    // Populate form with mock data or stored data
-    // In a real app, fetch this from your backend
+    
+    let initialFullName = 'Demo User';
+    if (typeof window !== 'undefined') {
+      initialFullName = localStorage.getItem('userNameMediCall') || 'Demo User';
+    }
+
     form.reset({
-      fullName: 'Demo User',
+      fullName: initialFullName,
       email: 'demo@example.com', // This should ideally come from auth state
       phone: '123-456-7890',
       bio: 'This is a sample bio for the demo user.',
-      specialty: storedRole === 'doctor' ? specialties[0]?.value : undefined, // Default to first specialty if doctor
-      languagesSpoken: storedRole === 'doctor' ? [languages[0]?.value] : undefined, // Default to first language if doctor
+      specialty: storedRole === 'doctor' ? specialties[0]?.value : undefined, 
+      languagesSpoken: storedRole === 'doctor' ? [languages[0]?.value] : undefined, 
     });
   }, [form]);
 
@@ -68,8 +72,12 @@ export function ProfileForm() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     console.log('Profile data:', data);
-    // In a real app, you would send this data to your backend to update the user's profile.
-    // Example: await updateUserProfile(data);
+    
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('userNameMediCall', data.fullName);
+      window.dispatchEvent(new CustomEvent('authChange')); // Notify other components of the name change
+    }
+
     setIsLoading(false);
     toast({
       title: 'Profile Updated!',

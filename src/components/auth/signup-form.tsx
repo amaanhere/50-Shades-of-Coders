@@ -56,6 +56,7 @@ export function SignupForm() {
     if (typeof window !== 'undefined') {
         localStorage.setItem('isLoggedInMediCall', 'true'); // Simulate login
         localStorage.setItem('userRoleMediCall', data.role);
+        localStorage.setItem('userNameMediCall', data.fullName); // Store user's full name
          // Dispatch a custom event to notify other components (like the header) of auth change
         window.dispatchEvent(new CustomEvent('authChange'));
     }

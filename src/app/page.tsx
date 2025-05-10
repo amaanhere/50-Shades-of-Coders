@@ -1,16 +1,43 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bot, Stethoscope, UserPlus } from 'lucide-react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 export default function HomePage() {
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const updateUserName = () => {
+      const loggedIn = typeof window !== 'undefined' ? localStorage.getItem('isLoggedInMediCall') === 'true' : false;
+      if (loggedIn) {
+        const name = typeof window !== 'undefined' ? localStorage.getItem('userNameMediCall') : null;
+        setUserName(name);
+      } else {
+        setUserName(null);
+      }
+    };
+
+    updateUserName(); // Initial check
+
+    window.addEventListener('storage', updateUserName); // Listen for direct localStorage changes
+    window.addEventListener('authChange', updateUserName); // Listen for custom auth event
+
+    return () => {
+      window.removeEventListener('storage', updateUserName);
+      window.removeEventListener('authChange', updateUserName);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-primary/10 to-accent/10 dark:from-primary/20 dark:to-accent/20 rounded-lg shadow-lg">
         <div className="container px-4 md:px-6 text-center">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-primary">
-            Welcome to MediCall
+            {userName ? `Welcome to ${userName}` : 'Welcome to MediCall'}
           </h1>
           <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl mt-4">
             Your health, connected. Access doctors, check symptoms, and manage your health online.
