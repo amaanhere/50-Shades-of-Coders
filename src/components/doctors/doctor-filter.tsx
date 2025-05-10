@@ -12,6 +12,9 @@ interface DoctorFilterProps {
   onFilterChange: (filters: { specialty: string; language: string; location: string }) => void;
 }
 
+const ANY_SPECIALTY_VALUE = "_ANY_SPECIALTY_";
+const ANY_LANGUAGE_VALUE = "_ANY_LANGUAGE_";
+
 export function DoctorFilter({ onFilterChange }: DoctorFilterProps) {
   const [specialty, setSpecialty] = useState('');
   const [language, setLanguage] = useState('');
@@ -45,7 +48,7 @@ export function DoctorFilter({ onFilterChange }: DoctorFilterProps) {
                 <SelectValue placeholder="Any Specialty" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Specialty</SelectItem>
+                <SelectItem value={ANY_SPECIALTY_VALUE}>Any Specialty</SelectItem>
                 {specialties.map((spec) => (
                   <SelectItem key={spec.value} value={spec.value}>
                     {spec.label}
@@ -62,7 +65,7 @@ export function DoctorFilter({ onFilterChange }: DoctorFilterProps) {
                 <SelectValue placeholder="Any Language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Language</SelectItem>
+                <SelectItem value={ANY_LANGUAGE_VALUE}>Any Language</SelectItem>
                 {languages.map((lang) => (
                   <SelectItem key={lang.value} value={lang.label.toLowerCase()}>
                     {lang.label}

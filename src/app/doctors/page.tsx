@@ -7,49 +7,67 @@ import { mockDoctors, type Doctor } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 
+const ANY_SPECIALTY_VALUE = "_ANY_SPECIALTY_";
+const ANY_LANGUAGE_VALUE = "_ANY_LANGUAGE_";
+
 export default function DoctorsPage() {
   const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>(mockDoctors);
   const [searchTerm, setSearchTerm] = useState('');
+  // Store current filter values to re-apply them after search
+  const [currentFilters, setCurrentFilters] = useState({ specialty: '', language: '', location: '' });
+
 
   const handleFilterChange = (filters: { specialty: string; language: string; location: string }) => {
+    setCurrentFilters(filters); // Store the latest filters
     let doctors = mockDoctors;
-    if (filters.specialty) {
-      doctors = doctors.filter(doc => doc.specialty.toLowerCase() === filters.specialty.toLowerCase());
-    }
-    if (filters.language) {
-      doctors = doctors.filter(doc => doc.languages.map(l => l.toLowerCase()).includes(filters.language.toLowerCase()));
-    }
-    if (filters.location) {
-      doctors = doctors.filter(doc => doc.location.toLowerCase().includes(filters.location.toLowerCase()));
-    }
-     if (searchTerm) {
+
+    // Apply search term first if present
+    if (searchTerm) {
       doctors = doctors.filter(doc =>
         doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         doc.specialty.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    
+    // Apply filters
+    if (filters.specialty && filters.specialty !== ANY_SPECIALTY_VALUE) {
+      doctors = doctors.filter(doc => doc.specialty.toLowerCase() === filters.specialty.toLowerCase());
+    }
+    if (filters.language && filters.language !== ANY_LANGUAGE_VALUE) {
+      doctors = doctors.filter(doc => doc.languages.map(l => l.toLowerCase()).includes(filters.language.toLowerCase()));
+    }
+    if (filters.location) {
+      doctors = doctors.filter(doc => doc.location.toLowerCase().includes(filters.location.toLowerCase()));
+    }
+    
     setFilteredDoctors(doctors);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value;
     setSearchTerm(term);
+    
+    // Re-apply filters with the new search term
+    // This ensures search and filters work together
     let doctors = mockDoctors;
-     // Apply existing filters first if any (or refactor to combine filter state)
-    // For simplicity, this search will currently search from all mockDoctors then apply filters
     if (term) {
       doctors = doctors.filter(doc =>
         doc.name.toLowerCase().includes(term.toLowerCase()) ||
         doc.specialty.toLowerCase().includes(term.toLowerCase())
       );
     }
-    // This is a simplified re-application of filters. A more robust solution would manage combined filter state.
-    // For now, calling handleFilterChange with current filter values to re-apply them on the searched list.
-    // This needs a way to get current filter values, or pass them around.
-    // Simplified: search resets other filters for now, or we need a more complex state management.
-    // Let's make search an addition:
-    const currentFilters = { specialty: '', language: '', location: '' }; // Placeholder: fetch actual filter values if set
-    handleFilterChange(currentFilters); // Re-apply filters on the possibly search-narrowed list or full list
+
+    // Apply current filters on the search-filtered list
+    if (currentFilters.specialty && currentFilters.specialty !== ANY_SPECIALTY_VALUE) {
+      doctors = doctors.filter(doc => doc.specialty.toLowerCase() === currentFilters.specialty.toLowerCase());
+    }
+    if (currentFilters.language && currentFilters.language !== ANY_LANGUAGE_VALUE) {
+      doctors = doctors.filter(doc => doc.languages.map(l => l.toLowerCase()).includes(currentFilters.language.toLowerCase()));
+    }
+    if (currentFilters.location) {
+      doctors = doctors.filter(doc => doc.location.toLowerCase().includes(currentFilters.location.toLowerCase()));
+    }
+    setFilteredDoctors(doctors);
   };
 
 
