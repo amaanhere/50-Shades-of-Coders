@@ -19,7 +19,7 @@ const AiSymptomCheckerInputSchema = z.object({
 export type AiSymptomCheckerInput = z.infer<typeof AiSymptomCheckerInputSchema>;
 
 const AiSymptomCheckerOutputSchema = z.object({
-  assessment: z.string().describe('A preliminary assessment of the symptoms, including possible conditions, reasons, remedies/cures, danger assessment, doctor recommendations, and translated into the specified language.'),
+  assessment: z.string().describe('A preliminary assessment of the symptoms, presented as a list of points. This includes possible conditions, potential reasons, suggested remedies/cures, danger assessment, and doctor recommendations, translated into the specified language.'),
   likelihoodEstimate: z.string().describe('An estimate of the likelihood that the symptoms match known conditions.'),
   disclaimer: z.string().describe('A disclaimer encouraging the user to speak to a medical professional.'),
 });
@@ -38,8 +38,12 @@ const aiSymptomCheckerPrompt = ai.definePrompt({
   Symptoms: {{{symptoms}}}
   Language: {{{language}}}
 
-  Provide a preliminary assessment of the symptoms, including possible conditions and recommendations in the specified language. Include
-  what can be the reason, suggested remedies and cures for the cause, if it can be dangerous, and which type of doctor should be consulted.
+  Provide a preliminary assessment of the symptoms in the specified language. The assessment should be presented as a list of points or bullet points and cover the following aspects:
+  - Possible conditions.
+  - Potential reasons for the symptoms.
+  - Suggested remedies and cures for the cause.
+  - An assessment of how dangerous the symptoms might be.
+  - Recommendations for which type of doctor to consult.
 
   Include an estimate of the likelihood that the symptoms match known conditions.
   Also include a disclaimer encouraging the user to speak to a medical professional.
