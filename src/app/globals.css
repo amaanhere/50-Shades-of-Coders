@@ -10,13 +10,13 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 180 100% 25.1%; /* Teal #008080 */
+    --primary: 180 100% 25.1%; /* Teal #008080 - This will be our 'green' for the gradient */
     --primary-foreground: 0 0% 98%; /* Almost White */
     --secondary: 210 40% 96.1%; /* Lighter gray */
     --secondary-foreground: 240 5.9% 10%; /* Dark text for secondary */
     --muted: 210 40% 96.1%;
     --muted-foreground: 210 40% 45.1%; /* Lighter dark gray */
-    --accent: 211 100% 50%; /* Blue #007BFF */
+    --accent: 211 100% 50%; /* Blue #007BFF - This will be our 'blue' for the gradient */
     --accent-foreground: 0 0% 98%; /* Almost White */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -80,6 +80,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    /* @apply bg-background text-foreground; */ /* Removed original background */
+    background-image: linear-gradient(to bottom right, hsl(var(--accent)), hsl(var(--primary)));
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 100vh;
+    @apply text-foreground; /* Kept text color */
   }
 }
