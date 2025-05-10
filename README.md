@@ -29,7 +29,7 @@ Faster summarization for teleconsultation records.
 Intelligent interaction from speech input in rural health setups.
 
 🛠️ Tech Stack 
-Frontend: React / Flutter (if applicable)
+Frontend: TypeScript
 
 Backend: Node.js 
 
