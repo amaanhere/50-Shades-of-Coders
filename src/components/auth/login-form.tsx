@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -40,16 +41,22 @@ export function LoginForm() {
 
     // Simulate successful login
     // In a real app, you'd verify credentials and get user role from backend
-    localStorage.setItem('isLoggedInMediCall', 'true');
-    // Simulate a role, or retrieve if stored during signup simulation
-    const role = localStorage.getItem('userRoleMediCall') || 'patient'; 
-    localStorage.setItem('userRoleMediCall', role);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isLoggedInMediCall', 'true');
+      // Simulate a role, or retrieve if stored during signup simulation
+      const role = localStorage.getItem('userRoleMediCall') || 'patient'; 
+      localStorage.setItem('userRoleMediCall', role);
+      // Dispatch a custom event to notify other components (like the header) of auth change
+      window.dispatchEvent(new CustomEvent('authChange'));
+    }
+
 
     toast({
       title: 'Logged In!',
       description: 'Welcome back to MediCall.',
     });
     router.push('/'); // Redirect to homepage after login
+    router.refresh(); // Refresh the page to ensure header updates if it missed the event somehow
   };
 
   return (

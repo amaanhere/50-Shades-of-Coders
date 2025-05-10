@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -45,18 +46,19 @@ export function ProfileForm() {
 
   useEffect(() => {
     // Simulate fetching user data and role
-    const storedRole = localStorage.getItem('userRoleMediCall');
+    const storedRole = typeof window !== 'undefined' ? localStorage.getItem('userRoleMediCall') : null;
     if (storedRole === 'doctor') {
       setIsDoctor(true);
     }
     // Populate form with mock data or stored data
+    // In a real app, fetch this from your backend
     form.reset({
       fullName: 'Demo User',
-      email: 'demo@example.com',
+      email: 'demo@example.com', // This should ideally come from auth state
       phone: '123-456-7890',
       bio: 'This is a sample bio for the demo user.',
-      specialty: storedRole === 'doctor' ? 'general' : undefined,
-      languagesSpoken: storedRole === 'doctor' ? ['en'] : undefined,
+      specialty: storedRole === 'doctor' ? specialties[0]?.value : undefined, // Default to first specialty if doctor
+      languagesSpoken: storedRole === 'doctor' ? [languages[0]?.value] : undefined, // Default to first language if doctor
     });
   }, [form]);
 
@@ -66,6 +68,8 @@ export function ProfileForm() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     console.log('Profile data:', data);
+    // In a real app, you would send this data to your backend to update the user's profile.
+    // Example: await updateUserProfile(data);
     setIsLoading(false);
     toast({
       title: 'Profile Updated!',
@@ -154,14 +158,14 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
-            {/* Languages spoken selection for doctors could be more complex (multi-select) - simplified here */}
+            {/* Languages spoken selection for doctors could be more complex (multi-select) - simplified here for single selection */}
             <FormField
               control={form.control}
               name="languagesSpoken" 
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Languages Spoken (Primary)</FormLabel>
-                   <Select onValueChange={(value) => field.onChange([value])} defaultValue={field.value?.[0]}>
+                   <Select onValueChange={(value) => field.onChange([value])} value={field.value?.[0] || ''}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select primary language spoken" />

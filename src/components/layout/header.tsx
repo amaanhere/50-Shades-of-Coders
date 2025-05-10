@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -26,14 +27,35 @@ export function AppHeader() {
 
   useEffect(() => {
     // Simulate checking auth status from localStorage
-    const authStatus = localStorage.getItem('isLoggedInMediCall');
+    const authStatus = typeof window !== 'undefined' ? localStorage.getItem('isLoggedInMediCall') : null;
     setIsLoggedIn(authStatus === 'true');
+
+    const handleStorageChange = () => {
+      const newAuthStatus = typeof window !== 'undefined' ? localStorage.getItem('isLoggedInMediCall') : null;
+      setIsLoggedIn(newAuthStatus === 'true');
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    // Also listen for a custom event that might be dispatched on login/logout
+    window.addEventListener('authChange', handleStorageChange);
+
+
+    return () => {
+        window.removeEventListener('storage', handleStorageChange);
+        window.removeEventListener('authChange', handleStorageChange);
+    }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedInMediCall');
-    setIsLoggedIn(false);
-    // Potentially redirect to home or login page
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('isLoggedInMediCall');
+      localStorage.removeItem('userRoleMediCall');
+      setIsLoggedIn(false);
+      // Dispatch a custom event to notify other components if necessary
+      window.dispatchEvent(new CustomEvent('authChange'));
+      // Potentially redirect to home or login page
+      // router.push('/'); // if using useRouter
+    }
   };
 
   const UserMenu = () => (
@@ -51,8 +73,10 @@ export function AppHeader() {
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href="/appointments">Appointments</Link>
+          {/* Placeholder for appointments link, assuming it might be added later */}
+          <Link href="#">Appointments</Link>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Logout
@@ -92,7 +116,7 @@ export function AppHeader() {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[280px]">
+      <SheetContent side="right" className="w-[280px] bg-background">
         <div className="flex flex-col space-y-4 p-4">
          <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setIsMobileMenuOpen(false)}>
             <HeartPulse className="h-8 w-8 text-primary" />
@@ -112,8 +136,8 @@ export function AppHeader() {
           {isLoggedIn ? (
             <>
               <Link href="/profile" className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Profile</Link>
-              <Link href="/appointments" className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Appointments</Link>
-              <Button variant="ghost" onClick={() => { handleLogout(); setIsMobileMenuOpen(false);}} className="w-full justify-start text-lg">
+              <Link href="#" className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Appointments</Link>
+              <Button variant="ghost" onClick={() => { handleLogout(); setIsMobileMenuOpen(false);}} className="w-full justify-start text-lg text-foreground/80 hover:text-foreground">
                 <LogOut className="mr-2 h-5 w-5" /> Logout
               </Button>
             </>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -9,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { userRoles } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation'; // Corrected import
+import { useRouter } from 'next/navigation'; 
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -52,8 +53,12 @@ export function SignupForm() {
     setIsLoading(false);
 
     // Simulate successful signup
-    localStorage.setItem('isLoggedInMediCall', 'true'); // Simulate login
-    localStorage.setItem('userRoleMediCall', data.role);
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('isLoggedInMediCall', 'true'); // Simulate login
+        localStorage.setItem('userRoleMediCall', data.role);
+         // Dispatch a custom event to notify other components (like the header) of auth change
+        window.dispatchEvent(new CustomEvent('authChange'));
+    }
 
 
     toast({
@@ -61,6 +66,7 @@ export function SignupForm() {
       description: 'Welcome to MediCall. You are now logged in.',
     });
     router.push('/'); // Redirect to homepage after signup
+    router.refresh(); // Refresh the page to ensure header updates
   };
 
   return (
